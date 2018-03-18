@@ -1,26 +1,21 @@
 package com.naukma.springDbDemo.entities;
 
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="TEACHERS")
+@Table(name="Teachers")
 public class Teacher {
     @Id
     @GeneratedValue
     private int teacherId;
 
-    @Column(name="firstname")
     private String firstname;
 
-    @Column(name="lastname")
     private String lastname;
 
-    @Column(name="birthDate")
     private Date birthDate;
 
-    @Column(name="cellPhone")
     private String cellPhone;
 
     public int getTeacherId() {
@@ -61,5 +56,16 @@ public class Teacher {
 
     public void setCellPhone(String cellphone) {
         this.cellPhone = cellphone;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teacherId=" + teacherId +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", birthDate=" + birthDate +
+                ", cellPhone='" + cellPhone + '\'' +
+                '}';
     }
 }

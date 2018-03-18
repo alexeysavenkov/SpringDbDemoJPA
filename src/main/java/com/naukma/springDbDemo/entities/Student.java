@@ -1,22 +1,43 @@
 package com.naukma.springDbDemo.entities;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name="Students")
 public class Student {
-    private int studentId;
+    @Id
+    @GeneratedValue
+    private int id;
     private String pib;
     private int course;
 
-    public Student(String pib, int course) {
-        this.pib = pib;
-        this.course = course;
-    }
-    public Student() {}
-
-    public int getStudentId() {
-        return studentId;
+    public List<Lecture> getUniversity() {
+        return university;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setUniversity(List<Lecture> university) {
+        this.university = university;
+    }
+
+    @ManyToMany(mappedBy = "students")
+    private List<Lecture> university;
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", pib='" + pib + '\'' +
+                ", course=" + course +
+                '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPib() {
@@ -33,14 +54,5 @@ public class Student {
 
     public void setCourse(int course) {
         this.course = course;
-    }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                "studentId=" + studentId +
-                ", pib='" + pib + '\'' +
-                ", course=" + course +
-                '}';
     }
 }

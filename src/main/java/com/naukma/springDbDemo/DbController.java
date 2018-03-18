@@ -1,61 +1,107 @@
 package com.naukma.springDbDemo;
 
-import com.naukma.springDbDemo.entities.Student;
-import com.naukma.springDbDemo.entities.Teacher;
+import com.naukma.springDbDemo.entities.*;
+import com.naukma.springDbDemo.worker.LecturesWorker;
 import com.naukma.springDbDemo.worker.StudentsWorker;
 import com.naukma.springDbDemo.worker.TeachersWorker;
+import com.naukma.springDbDemo.worker.UniversityWorker;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import sun.nio.cs.UnicodeEncoder;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 public class DbController {
 
-    @RequestMapping("/db-write-demo")
-    public String dbWrite() {
+    @RequestMapping("generate-test-db")
+    public String generateTestDb() {
         ApplicationContext context = getContext();
-        StudentsWorker worker =
-                (StudentsWorker) context.getBean("worker");
 
-        Student testStudent = new Student("Savenkov Oleksii", 5);
-        worker.saveStudentToDb(testStudent);
+        University university = new University();
+        Teacher teacher = new Teacher();
+        Lecture lecture = new Lecture();
+        List<Student> students = new ArrayList<>();
 
-        return "SUCCESS";
-    }
+        {
+            Student student = new Student();
+            student.setCourse(3);
+            student.setPib("Savenkov Oleksii");
 
-    @RequestMapping(value="/db-read-demo", params={"id"})
-    public String dbRead(int id) {
-        ApplicationContext context = getContext();
-        StudentsWorker worker =
-                (StudentsWorker) context.getBean("worker");
+            StudentsWorker worker =
+                    (StudentsWorker) context.getBean("stud-worker");
 
-        Student student = worker.getStudentById(id);
+            students.add(worker.addStudent(student));
 
-        if(student == null) {
-            return "Student not found";
+            Student student2 = new Student();
+            student2.setCourse(4);
+            student2.setPib("Name Surname");
+
+            students.add(worker.addStudent(student2));
         }
 
-        return student.toString();
-    }
+        {
 
-    @RequestMapping("/hibernate-demo")
-    public String hibernateDemo() {
-        TeachersWorker teachersWorker =
-                (TeachersWorker) getContext().getBean("teachersWorker");
-        Teacher teacher = new Teacher();
-        teacher.setFirstname("Andrii");
-        teacher.setLastname("Glybovets");
-        teacher.setCellPhone("+380675097865");
-        teacher.setBirthDate(new Date());
-        teacher = teachersWorker.addTeacher(teacher);
-        teachersWorker.saveTacher(teacher);
+            university.setName("NAUKMA");
+
+            Address address = new Address();
+            address.setCity("Kyiv");
+            address.setCountry("Ukraine");
+            address.setStreet1("Skovorody");
+            address.setStreet2("2");
+            address.setZipcode("05555");
+            address.setState("Kyiv");
+
+            university.setAddress(address);
+            university.setCreationDate(new Date(1615, 1, 1));
+
+            UniversityWorker worker = (UniversityWorker) context.getBean("uni-worker");
+            university = worker.addUniversity(university);
+        }
+
+        {
+            TeachersWorker teachersWorker =
+                    (TeachersWorker) getContext().getBean("teacher-worker");
+            teacher.setFirstname("Andrii");
+            teacher.setLastname("Glybovets");
+            teacher.setCellPhone("+380675097865");
+            teacher.setBirthDate(new Date());
+            teacher = teachersWorker.addTeacher(teacher);
+        }
+
+        {
+            lecture.setName("Introduction to Spring");
+            lecture.setCredits(2.5);
+            lecture.setUniversity(university);
+            lecture.setTeacher(teacher);
+            lecture.setStudents(students);
+            LecturesWorker worker = (LecturesWorker) context.getBean("lecture-worker");
+            lecture = worker.addLecture(lecture);
+        }
+
 
         return "SUCCESS";
+    }
+
+    @RequestMapping("test-queries")
+    @Transactional
+    public String queryTest() {
+        ApplicationContext context = getContext();
+
+        LecturesWorker worker = (LecturesWorker) context.getBean("lecture-worker");
+
+        StringBuilder sb = new StringBuilder();
+
+        for(Lecture lecture : worker.findAllLectures()) {
+            sb.append(worker.getLectureInfo(lecture));
+        }
+
+        return sb.toString();
     }
 
     public static ApplicationContext getContext() {
