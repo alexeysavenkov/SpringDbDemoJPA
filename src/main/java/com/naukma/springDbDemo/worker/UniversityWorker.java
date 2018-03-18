@@ -14,4 +14,8 @@ public class UniversityWorker {
         System.out.println(university);
         return university;
     }
+
+    public University findNaukma() {
+        return universityDao.findNaukma();
+    }
 }

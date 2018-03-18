@@ -5,6 +5,9 @@ import java.util.Date;
 
 @Entity
 @Table(name="Teachers")
+@NamedQueries({
+        @NamedQuery(name="findGlybovets", query="SELECT t FROM Teacher t WHERE t.lastname = 'Glybovets'")
+})
 public class Teacher {
     @Id
     @GeneratedValue

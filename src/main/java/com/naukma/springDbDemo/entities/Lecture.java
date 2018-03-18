@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "findAll", query="select c from Lecture c")
+})
 @Table(name="Lectures")
 public class Lecture {
     @Id

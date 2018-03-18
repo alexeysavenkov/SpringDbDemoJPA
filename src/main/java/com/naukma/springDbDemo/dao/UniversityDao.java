@@ -12,4 +12,5 @@ public interface UniversityDao {
 
     void saveUniversity(University lecture);
 
+    University findNaukma();
 }

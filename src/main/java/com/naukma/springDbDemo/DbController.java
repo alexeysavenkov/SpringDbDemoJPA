@@ -104,6 +104,24 @@ public class DbController {
         return sb.toString();
     }
 
+    @RequestMapping("naukma")
+    public String naukma() {
+        ApplicationContext context = getContext();
+
+        UniversityWorker worker = (UniversityWorker) context.getBean("uni-worker");
+
+        return worker.findNaukma().toString();
+    }
+
+    @RequestMapping("glybovets")
+    public String glybovets() {
+        ApplicationContext context = getContext();
+
+        TeachersWorker worker = (TeachersWorker) context.getBean("teacher-worker");
+
+        return worker.findGlybovets().toString();
+    }
+
     public static ApplicationContext getContext() {
         return new ClassPathXmlApplicationContext("app-config.xml");
     }

@@ -1,5 +1,6 @@
 package com.naukma.springDbDemo.dao;
 
+import com.googlecode.ehcache.annotations.Cacheable;
 import com.naukma.springDbDemo.entities.Lecture;
 import com.naukma.springDbDemo.entities.Student;
 import org.springframework.stereotype.Repository;
@@ -26,8 +27,9 @@ public class LectureDaoJPAImpl implements LecturesDao{
         return em.find(Lecture.class,id);
     }
 
+    @Cacheable(cacheName = "lecturesCache")
     public Collection<Lecture> findAllLectures() {
-        Query query = em.createQuery("SELECT t FROM Lecture t");
+        Query query = em.createNamedQuery("findAll");
         return (Collection<Lecture>) query.getResultList();
     }
 

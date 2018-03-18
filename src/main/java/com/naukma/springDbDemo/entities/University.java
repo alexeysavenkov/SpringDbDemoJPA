@@ -6,6 +6,9 @@ import java.util.List;
 
 @Entity
 @Table(name="Universities")
+@NamedQueries({
+        @NamedQuery(name="findNaukma", query="SELECT t FROM University t WHERE t.name = 'NAUKMA'")
+})
 public class University {
     @Id
     @GeneratedValue

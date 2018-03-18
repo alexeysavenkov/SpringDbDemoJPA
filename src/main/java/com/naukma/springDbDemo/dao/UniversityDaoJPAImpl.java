@@ -26,4 +26,9 @@ public class UniversityDaoJPAImpl implements UniversityDao {
     public void saveUniversity(University university) {
         em.merge(university);
     }
+
+    @Override
+    public University findNaukma() {
+        return (University) em.createNamedQuery("findNaukma").getSingleResult();
+    }
 }

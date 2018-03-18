@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name="findByName", query="SELECT t FROM Student t WHERE t.pib LIKE :name"),
+        @NamedQuery(name="findByCourse", query="SELECT t FROM Student t WHERE t.course = :course")
+})
 @Table(name="Students")
 public class Student {
     @Id

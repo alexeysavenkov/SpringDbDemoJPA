@@ -26,4 +26,9 @@ public class TeacherDaoJPAImpl implements TeacherDao {
     public void saveTeacher(Teacher teacher) {
         em.merge(teacher);
     }
+
+    @Override
+    public Teacher findGlybovets() {
+        return (Teacher)em.createNamedQuery("findGlybovets").getSingleResult();
+    }
 }

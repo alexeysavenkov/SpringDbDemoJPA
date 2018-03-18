@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collection;
 
 @Repository
 @Transactional
@@ -26,5 +27,15 @@ public class StudentDaoJPAImpl implements StudentDao {
 
     public void saveStudent(Student student) {
         em.merge(student);
+    }
+
+    @Override
+    public Collection<Student> findByName(String name) {
+        return (Collection<Student>)em.createNamedQuery("findByName").setParameter("name", name).getResultList();
+    }
+
+    @Override
+    public Collection<Student> findByCourse(int course) {
+        return (Collection<Student>)em.createNamedQuery("findByCourse").setParameter("course", course).getResultList();
     }
 }

@@ -12,4 +12,5 @@ public interface TeacherDao {
 
     void saveTeacher(Teacher teacher);
 
+    Teacher findGlybovets();
 }

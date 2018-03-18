@@ -14,4 +14,8 @@ public class TeachersWorker {
         System.out.println(teacher);
         return teacher;
     }
+
+    public Teacher findGlybovets() {
+        return teacherDao.findGlybovets();
+    }
 }
