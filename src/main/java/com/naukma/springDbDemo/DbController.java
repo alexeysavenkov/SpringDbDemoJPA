@@ -19,6 +19,41 @@ import java.util.List;
 @RestController
 public class DbController {
 
+    @RequestMapping("program-tx-test")
+    public String programTxTest() {
+        ApplicationContext context = getContext();
+
+        TeachersWorker teachersWorker = (TeachersWorker) getContext().getBean("teacher-worker");
+
+        // Adds two teachers
+        teachersWorker.programTransactionTestSuccess();
+
+        // Adds nothing
+        teachersWorker.programTransactionTestFail();
+
+
+        return "SUCCESS";
+    }
+
+    @RequestMapping("container-tx-test")
+    public String containerTxTest() {
+        ApplicationContext context = getContext();
+
+        TeachersWorker teachersWorker = (TeachersWorker) getContext().getBean("teacher-worker");
+
+        // Adds two teachers
+        teachersWorker.containerTransactionTestSuccess();
+
+        try {
+            // Adds nothing
+            teachersWorker.containerTransactionTestFailure();
+        } catch(RuntimeException e) {
+
+        }
+
+        return "SUCCESS";
+    }
+
     @RequestMapping("generate-test-db")
     public String generateTestDb() {
         ApplicationContext context = getContext();

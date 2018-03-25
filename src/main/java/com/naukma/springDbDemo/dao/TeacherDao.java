@@ -6,6 +6,7 @@ import com.naukma.springDbDemo.entities.University;
 
 public interface TeacherDao {
 
+
     Teacher addTeacher(Teacher teacher);
 
     Teacher getTeacher(int id);
